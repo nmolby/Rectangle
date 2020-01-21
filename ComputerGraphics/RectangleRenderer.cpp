@@ -21,6 +21,6 @@ RectangleRenderer::RectangleRenderer(GLFWwindow *window, std::string filename) :
         
         //constructs a new rectangle with these variables and then draw it
         Rectangle x(x1, y1, x2, y2, r, g, b);
-        x.Draw(*this);
+        x.Draw(this);
     }
 }

@@ -23,7 +23,7 @@ Rectangle::Rectangle(int x1, int y1, int x2, int y2, int r, int g, int b) {
 }
 
 ///draws the rectangle into the renderer that is passed
-void Rectangle::Draw(Renderer& renderer) {
+void Rectangle::Draw(Renderer* renderer) {
     std::vector<Point3D> pts;
 
     //add every point in between bottom left point and top right point to pts vector
@@ -34,5 +34,5 @@ void Rectangle::Draw(Renderer& renderer) {
     }
     
     //draw these points to the renderer with the desired color
-    renderer.addPoints(pts, Color(r, g, b));
+    renderer->addPoints(pts, Color(r, g, b));
 }
