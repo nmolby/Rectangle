@@ -27,6 +27,8 @@ void MyRectangle::set(const int x1, const int y1, const int x2, const int y2, co
         _upperRight.y = y1;
     }
     _color = color;
+    
+    //set all of the class variables to the parameters
     this->scaleX = scaleX;
     this->scaleY = scaleY;
     this->translateX = translateX;
@@ -35,39 +37,48 @@ void MyRectangle::set(const int x1, const int y1, const int x2, const int y2, co
 }
 
 void MyRectangle::render(Renderer *renderer) {
-    
+    //translates each point to be around the origin
     mat3 transtoOrig = mat3(1, 0, -1 * centerPoint().x,
                             0, 1, -1 * centerPoint().y,
                             0, 0, 1);
     
+    //scales each point
     mat3 scale = mat3(scaleX, 0, 0,
                       0, scaleY, 0,
                       0, 0, 1);
     
+    //rotates each point
     mat3 rot = mat3(cos(DegreesToRadians * rotateDeg), -1*sin(DegreesToRadians * rotateDeg), 0,
                     sin(DegreesToRadians * rotateDeg), cos(DegreesToRadians * rotateDeg), 0,
                     0, 0, 1);
     
+    //translates the point from the user
     mat3 transFromUser = mat3(1, 0, translateX,
                       0, 1, translateY,
                       0, 0, 1);
     
+    //translate the point back to its initial position
     mat3 transBack = mat3(1, 0, centerPoint().x,
                             0, 1, centerPoint().y,
                             0, 0, 1);
     
+    //order of events:
+    //translate to origin
+    //scale & rotate
+    //translate given
+    //translate back to initial position
     mat3 finalTrans = transBack * transFromUser * rot * scale * transtoOrig;
     
-    std::cout << transtoOrig << std::endl << scale << std::endl << rot << std::endl << transFromUser << std::endl << transBack;
-    
-    
     std::vector<Point3D> pts;
+    
     for (int y =_lowerLeft.y; y <= _upperRight.y; ++y) {
         for (int x = _lowerLeft.x; x <= _upperRight.x; ++x) {
             vec3 initialPoint = vec3(x, y, 1);
+            
+            //applies all of the transformations to point
             vec3 finalPoint = finalTrans * initialPoint;
             
-            
+            //adds the transformed point to the list of points
             pts.push_back(Point3D(float(finalPoint[0]), float(finalPoint[1]), 0.0));
         }
     }
